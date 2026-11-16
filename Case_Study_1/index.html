@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Employee Operations Portal</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Inter, "Segoe UI", Arial, sans-serif;
+            background: #f3f5f8;
+            color: #172033;
+        }
+
+        /* =========================
+           TOP NAVIGATION
+        ========================= */
+
+        .topbar {
+            height: 72px;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e9ef;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-mark {
+            width: 38px;
+            height: 38px;
+            background: #172033;
+            color: #ffffff;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 13px;
+            letter-spacing: -1px;
+        }
+
+        .brand-text strong {
+            display: block;
+            font-size: 15px;
+            color: #172033;
+        }
+
+        .brand-text span {
+            font-size: 10px;
+            color: #8993a4;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .top-link {
+            color: #657084;
+            font-size: 12px;
+            text-decoration: none;
+        }
+
+        .top-link:hover {
+            color: #172033;
+        }
+
+        .notification {
+            width: 35px;
+            height: 35px;
+            border: 1px solid #e1e6ed;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            background: #ffffff;
+        }
+
+        .user {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding-left: 15px;
+            border-left: 1px solid #e4e8ee;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #dbeafe;
+            color: #2563eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .user-name {
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* =========================
+           PAGE
+        ========================= */
+
+        .page {
+            width: 90%;
+            max-width: 1350px;
+            margin: 0 auto;
+            padding: 38px 0 30px;
+        }
+
+        .intro {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 28px;
+        }
+
+        .intro h1 {
+            font-size: 32px;
+            letter-spacing: -1px;
+            color: #172033;
+            margin-bottom: 7px;
+        }
+
+        .intro p {
+            color: #7c8799;
+            font-size: 13px;
+        }
+
+        .intro-date {
+            font-size: 11px;
+            color: #7b8697;
+            background: white;
+            border: 1px solid #e2e7ed;
+            padding: 9px 13px;
+            border-radius: 7px;
+        }
+
+        /* =========================
+           OVERVIEW
+        ========================= */
+
+        .overview {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 13px;
+            margin-bottom: 24px;
+        }
+
+        .overview-card {
+            background: white;
+            border: 1px solid #e3e8ee;
+            border-radius: 12px;
+            padding: 18px;
+            min-height: 105px;
+        }
+
+        .overview-card:first-child {
+            background: #172033;
+            color: white;
+            border-color: #172033;
+        }
+
+        .overview-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .7px;
+            color: #8994a6;
+            margin-bottom: 10px;
+        }
+
+        .overview-card:first-child .overview-label {
+            color: #9fa9b9;
+        }
+
+        .overview-value {
+            font-size: 25px;
+            font-weight: 750;
+        }
+
+        .overview-note {
+            margin-top: 7px;
+            font-size: 10px;
+            color: #8792a4;
+        }
+
+        .overview-card:first-child .overview-note {
+            color: #aeb6c3;
+        }
+
+        /* =========================
+           MAIN WORKSPACE
+        ========================= */
+
+        .workspace {
+            display: grid;
+            grid-template-columns: 285px 1fr;
+            gap: 18px;
+            align-items: start;
+        }
+
+        .panel {
+            background: #ffffff;
+            border: 1px solid #e2e7ed;
+            border-radius: 13px;
+        }
+
+        /* =========================
+           FORM PANEL
+        ========================= */
+
+        .form-panel {
+            padding: 21px;
+        }
+
+        .panel-head {
+            padding-bottom: 17px;
+            border-bottom: 1px solid #edf0f4;
+            margin-bottom: 18px;
+        }
+
+        .panel-head h2 {
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+
+        .panel-head p {
+            color: #8993a3;
+            font-size: 10px;
+            line-height: 1.5;
+        }
+
+        .field {
+            margin-bottom: 14px;
+        }
+
+        .field label {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            color: #5c687a;
+            margin-bottom: 6px;
+        }
+
+        .field input {
+            width: 100%;
+            height: 39px;
+            border: 1px solid #dfe5ec;
+            border-radius: 7px;
+            padding: 0 11px;
+            background: #fafbfd;
+            outline: none;
+            color: #172033;
+            font-size: 11px;
+            transition: .2s;
+        }
+
+        .field input:focus {
+            background: #ffffff;
+            border-color: #64748b;
+            box-shadow: 0 0 0 3px rgba(100, 116, 139, .08);
+        }
+
+        .field input::placeholder {
+            color: #aeb6c2;
+        }
+
+        .submit {
+            width: 100%;
+            height: 40px;
+            border: none;
+            border-radius: 7px;
+            background: #172033;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 4px;
+            transition: .2s;
+        }
+
+        .submit:hover {
+            background: #26344b;
+            transform: translateY(-1px);
+        }
+
+        #employeeOutput {
+            display: none;
+            margin-top: 14px;
+            background: #f6f8fa;
+            border-radius: 7px;
+            padding: 10px;
+            border: 1px solid #e6eaf0;
+        }
+
+        .output-title {
+            font-size: 9px;
+            font-weight: 700;
+            color: #687487;
+            margin-bottom: 5px;
+        }
+
+        #jsonText {
+            font-family: Consolas, monospace;
+            font-size: 8px;
+            color: #697587;
+            word-break: break-all;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           DIRECTORY
+        ========================= */
+
+        .directory {
+            padding: 21px;
+            min-width: 0;
+        }
+
+        .directory-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .directory-title h2 {
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .directory-title p {
+            color: #8993a3;
+            font-size: 10px;
+        }
+
+        .tools {
+            display: flex;
+            gap: 8px;
+        }
+
+        .search {
+            width: 175px;
+            height: 36px;
+            border: 1px solid #dfe5ec;
+            background: #fafbfd;
+            border-radius: 7px;
+            padding: 0 10px;
+            font-size: 10px;
+            outline: none;
+        }
+
+        .search:focus {
+            border-color: #9aa5b5;
+        }
+
+        .load {
+            height: 36px;
+            padding: 0 13px;
+            border: none;
+            border-radius: 7px;
+            background: #2563eb;
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .load:hover {
+            background: #1d4ed8;
+        }
+
+        /* =========================
+           EMPLOYEE ROWS
+        ========================= */
+
+        .employee-list {
+            border: 1px solid #e7ebf0;
+            border-radius: 9px;
+            overflow: hidden;
+        }
+
+        .list-header {
+            display: grid;
+            grid-template-columns: .8fr 1.6fr 1fr 1fr .7fr;
+            background: #f7f8fa;
+            padding: 11px 14px;
+            border-bottom: 1px solid #e7ebf0;
+            color: #8792a3;
+            font-size: 9px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: .5px;
+        }
+
+        .employee-row {
+            display: grid;
+            grid-template-columns: .8fr 1.6fr 1fr 1fr .7fr;
+            padding: 15px 14px;
+            align-items: center;
+            border-bottom: 1px solid #edf0f3;
+            transition: .18s;
+        }
+
+        .employee-row:last-child {
+            border-bottom: none;
+        }
+
+        .employee-row:hover {
+            background: #fafbfd;
+        }
+
+        .emp-id {
+            font-size: 10px;
+            color: #2563eb;
+            font-weight: 700;
+        }
+
+        .emp-name {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .mini-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 7px;
+            background: #eef2f7;
+            color: #4b5563;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            font-weight: 800;
+        }
+
+        .name-text strong {
+            display: block;
+            font-size: 11px;
+            color: #263144;
+        }
+
+        .name-text span {
+            display: block;
+            font-size: 9px;
+            color: #9aa3b1;
+            margin-top: 2px;
+        }
+
+        .dept {
+            font-size: 10px;
+            color: #526074;
+        }
+
+        .salary {
+            font-size: 10px;
+            font-weight: 700;
+            color: #16805c;
+        }
+
+        .active {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #16805c;
+            font-size: 9px;
+            font-weight: 600;
+        }
+
+        .active-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #22c55e;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 55px 20px;
+            color: #9aa3b1;
+            font-size: 11px;
+        }
+
+        .empty strong {
+            color: #2563eb;
+        }
+
+        /* =========================
+           JSON INFO
+        ========================= */
+
+        .info-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+            padding: 10px 12px;
+            background: #fafbfd;
+            border: 1px solid #e8ecf1;
+            border-radius: 7px;
+            color: #8b95a5;
+            font-size: 9px;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            text-align: center;
+            color: #9aa3b1;
+            font-size: 9px;
+            padding-top: 22px;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1000px) {
+
+            .overview {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .overview-card:first-child {
+                grid-column: span 2;
+            }
+
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .top-link,
+            .notification,
+            .user-name {
+                display: none;
+            }
+
+            .page {
+                width: 94%;
+                padding-top: 25px;
+            }
+
+            .intro {
+                align-items: flex-start;
+            }
+
+            .intro h1 {
+                font-size: 25px;
+            }
+
+            .intro-date {
+                display: none;
+            }
+
+            .overview {
+                grid-template-columns: 1fr;
+            }
+
+            .overview-card:first-child {
+                grid-column: span 1;
+            }
+
+            .directory-head {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .tools {
+                width: 100%;
+            }
+
+            .search {
+                flex: 1;
+            }
+
+            .employee-list {
+                overflow-x: auto;
+            }
+
+            .list-header,
+            .employee-row {
+                min-width: 650px;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     TOP NAVIGATION
+========================= -->
+
+<header class="topbar">
+
+    <div class="brand">
+
+        <div class="brand-mark">
+            EO
+        </div>
+
+        <div class="brand-text">
+            <strong>EmployeeOps</strong>
+            <span>Operations Portal</span>
+        </div>
+
+    </div>
+
+
+    <div class="top-actions">
+
+        <a href="#" class="top-link">
+            Dashboard
+        </a>
+
+        <a href="#" class="top-link">
+            Directory
+        </a>
+
+        <div class="notification">
+            ♧
+        </div>
+
+        <div class="user">
+
+            <div class="user-avatar">
+                AD
+            </div>
+
+            <div class="user-name">
+                Admin
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- =========================
+     MAIN PAGE
+========================= -->
+
+<main class="page">
+
+
+    <section class="intro">
+
+        <div>
+
+            <h1>Employee Overview</h1>
+
+            <p>
+                Keep track of your workforce and employee information.
+            </p>
+
+        </div>
+
+        <div class="intro-date">
+            ● System connected
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         OVERVIEW CARDS
+    ========================= -->
+
+    <section class="overview">
+
+
+        <div class="overview-card">
+
+            <div class="overview-label">
+                Workforce
+            </div>
+
+            <div class="overview-value" id="totalEmployees">
+                0
+            </div>
+
+            <div class="overview-note">
+                Total registered employees
+            </div>
+
+        </div>
+
+
+        <div class="overview-card">
+
+            <div class="overview-label">
+                Departments
+            </div>
+
+            <div class="overview-value" id="totalDepartments">
+                0
+            </div>
+
+            <div class="overview-note">
+                Active departments
+            </div>
+
+        </div>
+
+
+        <div class="overview-card">
+
+            <div class="overview-label">
+                Status
+            </div>
+
+            <div class="overview-value">
+                Active
+            </div>
+
+            <div class="overview-note">
+                System operational
+            </div>
+
+        </div>
+
+
+        <div class="overview-card">
+
+            <div class="overview-label">
+                Data Source
+            </div>
+
+            <div class="overview-value">
+                JSON
+            </div>
+
+            <div class="overview-note">
+          
