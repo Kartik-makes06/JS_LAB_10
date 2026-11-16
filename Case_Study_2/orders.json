@@ -1,0 +1,50 @@
+[
+  {
+    "orderId": "ORD-1001",
+    "customerName": "Aarav Sharma",
+    "foodItem": "Paneer Butter Masala",
+    "quantity": 2,
+    "totalAmount": 560,
+    "status": "Preparing"
+  },
+  {
+    "orderId": "ORD-1002",
+    "customerName": "Priya Patil",
+    "foodItem": "Veg Biryani",
+    "quantity": 1,
+    "totalAmount": 240,
+    "status": "Ready"
+  },
+  {
+    "orderId": "ORD-1003",
+    "customerName": "Rohan Deshmukh",
+    "foodItem": "Margherita Pizza",
+    "quantity": 3,
+    "totalAmount": 897,
+    "status": "Delivered"
+  },
+  {
+    "orderId": "ORD-1004",
+    "customerName": "Sneha Kulkarni",
+    "foodItem": "Masala Dosa",
+    "quantity": 4,
+    "totalAmount": 480,
+    "status": "Delivered"
+  },
+  {
+    "orderId": "ORD-1005",
+    "customerName": "Vikram Singh",
+    "foodItem": "Chicken Burger",
+    "quantity": 2,
+    "totalAmount": 398,
+    "status": "Preparing"
+  },
+  {
+    "orderId": "ORD-1006",
+    "customerName": "Neha Joshi",
+    "foodItem": "Pasta Alfredo",
+    "quantity": 1,
+    "totalAmount": 320,
+    "status": "Ready"
+  }
+]
