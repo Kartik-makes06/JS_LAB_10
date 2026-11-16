@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurant Orders</title>
+ 
+  <!-- 1. jQuery via CDN -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+ 
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f4f6fb;
+      margin: 0;
+      padding: 40px 16px;
+      color: #222;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 28px;
+      border-radius: 12px;
+      box-shadow: 0 4px 18px rgba(0,0,0,.08);
+    }
+    h1 { margin: 0 0 6px; font-size: 26px; }
+    p.sub { margin: 0 0 20px; color: #666; }
+    button {
+      background: #e4572e;
+      color: #fff;
+      border: 0;
+      padding: 10px 22px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    button:hover { background: #c8431f; }
+    button:disabled { background: #aaa; cursor: wait; }
+ 
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 22px;
+    }
+    th, td { padding: 12px 10px; text-align: left; border-bottom: 1px solid #eee; }
+    th { background: #2d3142; color: #fff; }
+    tr:hover td { background: #fafafa; }
+    td.num, th.num { text-align: right; }
+ 
+    .badge {
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .Preparing { background: #fff1d6; color: #a86a00; }
+    .Ready     { background: #d9ecff; color: #0b5cad; }
+    .Delivered { background: #dcf5e1; color: #1e7a34; }
+ 
+    #summary { margin-top: 18px; font-size: 16px; line-height: 1.8; }
+    #summary strong { color: #2d3142; }
+ 
+    #message {
+      display: none;
+      margin-top: 20px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      background: #fde4e4;
+      color: #a31515;
+      border-left: 4px solid #a31515;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🍽️ Restaurant Orders</h1>
+    <p class="sub">Click the button to load today's orders without refreshing the page.</p>
+ 
+    <button id="viewOrders">View Orders</button>
+ 
+    <div id="message"></div>
+ 
+    <table id="ordersTable" style="display:none;">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Customer Name</th>
+          <th>Food Item</th>
+          <th class="num">Quantity</th>
+          <th class="num">Total Amount (₹)</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+ 
+    <div id="summary" style="display:none;">
+      <div>Total number of orders: <strong id="totalOrders">0</strong></div>
+      <div>Total sales amount: <strong id="totalSales">₹0.00</strong></div>
+    </div>
+  </div>
+ 
+  <script>
+    $(document).ready(function () {
+ 
+      $("#viewOrders").on("click", function () {
+        var $btn = $(this);
+        var $tbody = $("#ordersTable tbody");
+ 
+        $btn.prop("disabled", true).text("Loading...");
+        $("#message").hide();
+ 
+        // 2. Retrieve data using $.getJSON()
+        $.getJSON("orders.json")
+          .done(function (data) {
+ 
+            // 5. Clear old rows first so clicking again never creates duplicates
+            $tbody.empty();
+ 
+            var totalSales = 0;
+ 
+            // 4. Process every JSON record with $.each()
+            $.each(data, function (index, order) {
+              var row = $("<tr>")
+                .append($("<td>").text(order.orderId))
+                .append($("<td>").text(order.customerName))
+                .append($("<td>").text(order.foodItem))
+                .append($("<td class='num'>").text(order.quantity))
+                .append($("<td class='num'>").text(Number(order.totalAmount).toFixed(2)))
+                .append($("<td>").append(
+                  $("<span class='badge'>").addClass(order.status).text(order.status)
+                ));
+ 
+              // 3. Display dynamically in the HTML table
+              $tbody.append(row);
+              totalSales += Number(order.totalAmount);
+            });
+ 
+            // 6 & 7. Total orders and total sales below the table
+            $("#totalOrders").text(data.length);
+            $("#totalSales").text("₹" + totalSales.toFixed(2));
+ 
+            $("#ordersTable, #summary").show();
+          })
+          .fail(function () {
+            // 8. Error message if orders.json cannot be loaded
+            $("#ordersTable, #summary").hide();
+            $tbody.empty();
+            $("#message")
+              .text("⚠️ Sorry, orders.json could not be loaded. Please check the file and try again.")
+              .show();
+          })
+          .always(function () {
+            $btn.prop("disabled", false).text("View Orders");
+          });
+      });
+ 
+    });
+  </script>
+</body>
+</html>
+ 
